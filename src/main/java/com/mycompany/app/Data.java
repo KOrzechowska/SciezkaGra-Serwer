@@ -1,25 +1,30 @@
 package com.mycompany.app;
-        import java.io.BufferedReader;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.io.InputStreamReader;
-        import java.io.OutputStream;
-        import java.io.PrintWriter;
-        import java.net.Socket;
-        import java.net.SocketTimeoutException;
-        import java.util.ArrayList;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 
 /**
- *
- *
- *Komunikacja z klientem - wysylanie odpowiedi
+ * Komunikacja z klientem - wysylanie odpowiedi
  */
 public class Data extends Thread {
-    /**tworzenie gniazda*/
+    /**
+     * tworzenie gniazda
+     */
     private Socket _socket;
-    /**tworzenie zmiennej strumienia wejsciowego*/
+    /**
+     * tworzenie zmiennej strumienia wejsciowego
+     */
     private BufferedReader _br;
-    /**tworzenie zmiennej strumienia wyjsciowego*/
+    /**
+     * tworzenie zmiennej strumienia wyjsciowego
+     */
     private PrintWriter _pw;
 
     Data(Socket socket) throws IOException {
@@ -33,7 +38,8 @@ public class Data extends Thread {
     }
 
     /**
-     * odbieranie komunikatwo od kilenta oraz wysylanie odpowiedzi*/
+     * odbieranie komunikatwo od kilenta oraz wysylanie odpowiedzi
+     */
     public void run() {
 
         try {
@@ -51,7 +57,7 @@ public class Data extends Thread {
                     try {
                         _socket.setSoTimeout(Config.timeout);
                         String number = _br.readLine();
-                        Panel.panel.addMessage("Do"+ " "
+                        Panel.panel.addMessage("Do" + " "
                                 + _socket.getInetAddress().getHostAddress() + ": "
                                 + number, Config.RECEIVED, true);
 
@@ -111,13 +117,13 @@ public class Data extends Thread {
 
 
                 /**Klient chce predkosc poruszania*/
-                case Protocol.GETSPEED : {
+                case Protocol.GETSPEED: {
                     String answer = null;
                     Panel.panel.addMessage("Czekam na numer poziomu trudnosci", Config.INFO, true);
                     try {
                         _socket.setSoTimeout(Config.timeout);
                         String number = _br.readLine();
-                        Panel.panel.addMessage("Do"+ " "
+                        Panel.panel.addMessage("Do" + " "
                                 + _socket.getInetAddress().getHostAddress() + ": "
                                 + number, Config.RECEIVED, true);
 
@@ -188,11 +194,19 @@ public class Data extends Thread {
                     }
                     /**odpowiedz serwera- wyslanie listy wynikow*/
                     Panel.panel.addMessage("Wysyłanie najlepszych wyników", Config.INFO, true);
-                    for (int i = 0; i < 20; i++) {
-                        _pw.println(answer.get(i));
+                    for (int i = 0; i < 5; i++) {
+
+                        _pw.println(answer.get(i).getNick());
                         Panel.panel.addMessage("Do" + " "
                                 + _socket.getInetAddress().getHostAddress() + ": "
-                                + answer.get(i), Config.SENT, true);
+                                + answer.get(i).getNick(), Config.SENT, true);
+                        System.out.println(answer.get(i).getNick());
+
+                        _pw.println(answer.get(i).getScore());
+                        Panel.panel.addMessage("Do" + " "
+                                + _socket.getInetAddress().getHostAddress() + ": "
+                                + answer.get(i).getScore(), Config.SENT, true);
+                        System.out.println(answer.get(i).getScore());
                     }
                     _socket.close();
                     break;

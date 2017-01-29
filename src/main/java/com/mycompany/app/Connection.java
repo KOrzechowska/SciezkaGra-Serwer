@@ -43,7 +43,7 @@ public class Connection extends Thread {
                 new Data(_serverSocket.accept());
             } catch (SocketException e) {
             } catch (IOException e) {
-                Panel.panel.addMessage("Błšd serwera", Config.ERROR, true);
+                Panel.panel.addMessage("Blad serwera", Config.ERROR, true);
             }
         }
     }

@@ -13,7 +13,7 @@ public class AppTest
     @Test
     public void TestApp(){
         SciezkaConfig sciezkaConfig = new SciezkaConfig();
-        assertEquals("4", sciezkaConfig.dajStringZPlanszy("lifes"));
+        assertEquals("3z", sciezkaConfig.dajStringZPlanszy("lifes"));
 
     }
 

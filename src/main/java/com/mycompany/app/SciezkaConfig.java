@@ -26,6 +26,13 @@ public class SciezkaConfig {
 
     public static void saveScore(String name, String score) {
         HighScores highScores = new HighScores();
+        try {
+            highScores.loadHighScores();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         highScores.addToHighScoreList(name , Integer.parseInt(score));
         try {
             highScores.saveHighScores();
@@ -39,10 +46,23 @@ public class SciezkaConfig {
         try {
             highScores.loadHighScores();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        if (highScores.getHighScoreList().size()<5)
+        {
+            for (int i=0; i<5; i++){
+                highScores.addToHighScoreList("Janek Bembenek",0);
+            }
+            try {
+                highScores.saveHighScores();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
        return highScores.getHighScoreList();
 
     }
